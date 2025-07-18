@@ -12,8 +12,57 @@ function buscarTodo(req, res) {
         .catch(e => {
            
             return res.status(404).send({mensaje: `Error al consultar la informacion ${e}`});
+
         });
      
 }
+function agregarJoya(req, res) {
+  //  console.log(req.body);
+    new joyasModel(req.body).save()
+        .then(info => {
+            return res.status(200).send(
+                {mensaje: 'La informacion se gusrdo de forma correcta', info});
+        
+})
+        .catch(e => {
+            return res.status(404).send({mensaje: `Error al guardar la informacion ${e}`});
 
-module.exports = {buscarTodo};
+        });
+}
+function buscarJoya(req, res, next) {
+    var consulta = {};
+    consulta[req.params.key] = req.params.value;
+ 
+    
+    joyasModel.find(consulta)
+    .then(joyas => {
+        if (!joyas || !joyas.length) {
+            req.body = req.body || {}; // Asegurarse de que req.body existe
+            req.body.joyas = [];
+            return next();
+        }
+        req.body = req.body || {}; // Asegurarse de que req.body existe
+        req.body.joyas = joyas;
+        return next();
+    })
+    .catch(e => {
+        req.body = req.body || {}; // Asegurarse de que req.body existe
+        req.body.e = e;
+        return next();
+    });
+}
+
+function mostrandojoyas(req, res) {
+    if (req.body.e)return res.status(404).send({mensaje:`Error al buscar la informacion ${req.body.e}`})
+    if (!req.body.joyas.length) return res.status(204).send({mensaje:"no hay nada que mostar"})
+    let joyas = req.body.joyas
+    return res.status(200).send({joyas})
+
+        }
+
+module.exports = {
+    buscarTodo, 
+    agregarJoya,
+    buscarJoya,
+    mostrandojoyas
+}
