@@ -4,8 +4,12 @@ const joyasController = require('../controllers/joyascontroller');
 
 
 router.get('/', joyasController.buscarTodo)
-     .post('/',joyasController.agregarJoya)
-     .get('/:key/:value',joyasController.buscarJoya, joyasController.mostrandojoyas)
+.post('/',joyasController.agregarJoya)
+.get('/:key/:value', joyasController.buscarJoya, joyasController.mostrandojoyas)
+.delete('/:key/:value', joyasController.buscarJoya, joyasController.eliminarJoya)
+.put('/:key/:value', joyasController.buscarJoya, joyasController.actualizarJoya);
+
+
 
      
 

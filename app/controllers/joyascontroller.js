@@ -59,10 +59,35 @@ function mostrandojoyas(req, res) {
     return res.status(200).send({joyas})
 
         }
+        function eliminarJoya(req, res) {
+            var joyas = {}
+            joyas = req.body.joyas
+            joyasModel.deleteOne(joyas[0])
+                .then(info => {
+                    return res.status(200).send({mensaje:" La informacion se elimino de forma correcta",  info});
+                })
+                .catch(e => {
+                    return res.status(404).send({mensaje: "Error al eliminar la informacion" , e });
+                })
+        }
+
+    function actualizarJoya(req, res) {
+            var joyas = {}
+            joyas = req.body.joyas
+            joyasModel.updateOne(joyas[0], req.body)
+                .then(info => {
+                    return res.status(200).send({mensaje:" La informacion se actualizo de forma correcta",  info});
+                })
+                .catch(e => {
+                    return res.status(404).send({mensaje: `Error al actualizar la informacion ${e}`});
+                })
+        }
 
 module.exports = {
     buscarTodo, 
     agregarJoya,
     buscarJoya,
-    mostrandojoyas
+    mostrandojoyas,
+    eliminarJoya,
+    actualizarJoya
 }
